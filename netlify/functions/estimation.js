@@ -4,7 +4,11 @@ exports.handler = async (event) => {
   }
 
   try {
-    const body = JSON.parse(event.body || '{}');
+    if (!event.body) {
+      return jsonResponse(400, { message: 'Body JSON manquant.' });
+    }
+
+    const body = JSON.parse(event.body);
 
     const {
       fullName = '',
