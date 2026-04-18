@@ -1,10 +1,10 @@
-export default async (req) => {
-  if (req.method !== 'POST') {
+exports.handler = async (event) => {
+  if (event.httpMethod !== 'POST') {
     return jsonResponse(405, { message: 'Méthode non autorisée.' });
   }
 
   try {
-    const body = await req.json();
+    const body = JSON.parse(event.body || '{}');
 
     const {
       fullName = '',
@@ -92,8 +92,7 @@ export default async (req) => {
 
     if (!resendResponse.ok) {
       return jsonResponse(500, {
-        message: resendData?.message || resendData?.error || 'Erreur Resend inconnue.',
-        details: resendData,
+        message: resendData?.message || resendData?.error || "Impossible d'envoyer la demande.",
       });
     }
 
@@ -108,35 +107,14 @@ export default async (req) => {
   }
 };
 
-function jsonResponse(status, data) {
-  return new Response(JSON.stringify(data), {
-    status,
+function jsonResponse(statusCode, data) {
+  return {
+    statusCode,
     headers: {
       'Content-Type': 'application/json',
     },
-  });
-}
-
-function isValidEmail(email) {
-  return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
-}
-
-function escapeHtml(str) {
-  return String(str)
-    .replaceAll('&', '&amp;')
-    .replaceAll('<', '&lt;')
-    .replaceAll('>', '&gt;')
-    .replaceAll('"', '&quot;')
-    .replaceAll("'", '&#039;');
-}
-
-function jsonResponse(status, data) {
-  return new Response(JSON.stringify(data), {
-    status,
-    headers: {
-      'Content-Type': 'application/json',
-    },
-  });
+    body: JSON.stringify(data),
+  };
 }
 
 function isValidEmail(email) {
