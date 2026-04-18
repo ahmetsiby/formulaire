@@ -38,6 +38,12 @@ export default async (req) => {
     const toEmail = process.env.ESTIMATION_TO_EMAIL;
     const fromEmail = process.env.ESTIMATION_FROM_EMAIL;
 
+    console.log('ENV CHECK', {
+      hasApiKey: Boolean(resendApiKey),
+      toEmail,
+      fromEmail,
+    });
+
     if (!resendApiKey || !toEmail || !fromEmail) {
       return jsonResponse(500, { message: 'Configuration email incomplète.' });
     }
@@ -67,7 +73,7 @@ export default async (req) => {
     const resendResponse = await fetch('https://api.resend.com/emails', {
       method: 'POST',
       headers: {
-        'Authorization': `Bearer ${resendApiKey}`,
+        Authorization: `Bearer ${resendApiKey}`,
         'Content-Type': 'application/json',
       },
       body: JSON.stringify({
@@ -81,9 +87,14 @@ export default async (req) => {
 
     const resendData = await resendResponse.json();
 
+    console.log('RESEND STATUS:', resendResponse.status);
+    console.log('RESEND DATA:', JSON.stringify(resendData));
+
     if (!resendResponse.ok) {
-      console.error('Erreur Resend :', resendData);
-      return jsonResponse(500, { message: "Impossible d'envoyer la demande." });
+      return jsonResponse(500, {
+        message: resendData?.message || resendData?.error || 'Erreur Resend inconnue.',
+        details: resendData,
+      });
     }
 
     return jsonResponse(200, {
@@ -91,9 +102,33 @@ export default async (req) => {
     });
   } catch (error) {
     console.error('Erreur Function :', error);
-    return jsonResponse(500, { message: 'Erreur serveur.' });
+    return jsonResponse(500, {
+      message: error?.message || 'Erreur serveur.',
+    });
   }
 };
+
+function jsonResponse(status, data) {
+  return new Response(JSON.stringify(data), {
+    status,
+    headers: {
+      'Content-Type': 'application/json',
+    },
+  });
+}
+
+function isValidEmail(email) {
+  return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+}
+
+function escapeHtml(str) {
+  return String(str)
+    .replaceAll('&', '&amp;')
+    .replaceAll('<', '&lt;')
+    .replaceAll('>', '&gt;')
+    .replaceAll('"', '&quot;')
+    .replaceAll("'", '&#039;');
+}
 
 function jsonResponse(status, data) {
   return new Response(JSON.stringify(data), {
