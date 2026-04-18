@@ -29,6 +29,7 @@ form.addEventListener('submit', async (e) => {
   e.preventDefault();
 
   const formData = new FormData(form);
+  const turnstileToken = formData.get('cf-turnstile-response');
 
   const payload = {
     fullName: formData.get('fullName')?.trim() || '',
@@ -44,7 +45,13 @@ form.addEventListener('submit', async (e) => {
     saleDelay: formData.get('saleDelay') || '',
     message: formData.get('message')?.trim() || '',
     website: formData.get('website')?.trim() || '',
+    turnstileToken: turnstileToken || '',
   };
+
+  if (!payload.turnstileToken) {
+    statusEl.textContent = 'Veuillez compléter la vérification anti-bot.';
+    return;
+  }
 
   submitBtn.disabled = true;
   statusEl.textContent = 'Envoi en cours...';
@@ -65,6 +72,10 @@ form.addEventListener('submit', async (e) => {
     statusEl.textContent =
       'Merci pour votre demande. Je reviens vers vous rapidement pour votre estimation personnalisée.';
     form.reset();
+
+    if (window.turnstile) {
+      window.turnstile.reset();
+    }
   } catch (error) {
     statusEl.textContent = error.message || 'Une erreur est survenue.';
     console.error(error);

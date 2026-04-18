@@ -24,10 +24,15 @@ exports.handler = async (event) => {
       saleDelay = '',
       message = '',
       website = '',
+      turnstileToken = '',
     } = body;
 
     if (website) {
       return jsonResponse(400, { message: 'Requête invalide.' });
+    }
+
+    if (!turnstileToken) {
+      return jsonResponse(400, { message: 'Validation anti-bot manquante.' });
     }
 
     if (!fullName.trim() || !phone.trim() || !email.trim() || !propertyAddress.trim() || !propertyType.trim()) {
@@ -41,15 +46,36 @@ exports.handler = async (event) => {
     const resendApiKey = process.env.RESEND_API_KEY;
     const toEmail = process.env.ESTIMATION_TO_EMAIL;
     const fromEmail = process.env.ESTIMATION_FROM_EMAIL;
+    const turnstileSecret = process.env.TURNSTILE_SECRET_KEY;
 
-    console.log('ENV CHECK', {
-      hasApiKey: Boolean(resendApiKey),
-      toEmail,
-      fromEmail,
+    if (!resendApiKey || !toEmail || !fromEmail || !turnstileSecret) {
+      return jsonResponse(500, { message: 'Configuration serveur incomplète.' });
+    }
+
+    const ip =
+      event.headers['x-nf-client-connection-ip'] ||
+      event.headers['x-forwarded-for'] ||
+      '';
+
+    const turnstileResponse = await fetch('https://challenges.cloudflare.com/turnstile/v0/siteverify', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/x-www-form-urlencoded',
+      },
+      body: new URLSearchParams({
+        secret: turnstileSecret,
+        response: turnstileToken,
+        remoteip: ip,
+      }),
     });
 
-    if (!resendApiKey || !toEmail || !fromEmail) {
-      return jsonResponse(500, { message: 'Configuration email incomplète.' });
+    const turnstileData = await turnstileResponse.json();
+
+    if (!turnstileData.success) {
+      console.error('Turnstile failed:', turnstileData);
+      return jsonResponse(400, {
+        message: 'Échec de la vérification anti-bot.',
+      });
     }
 
     const cleanFeatures = Array.isArray(features) ? features : [];
@@ -91,10 +117,8 @@ exports.handler = async (event) => {
 
     const resendData = await resendResponse.json();
 
-    console.log('RESEND STATUS:', resendResponse.status);
-    console.log('RESEND DATA:', JSON.stringify(resendData));
-
     if (!resendResponse.ok) {
+      console.error('Erreur Resend:', resendData);
       return jsonResponse(500, {
         message: resendData?.message || resendData?.error || "Impossible d'envoyer la demande.",
       });
@@ -104,10 +128,8 @@ exports.handler = async (event) => {
       message: 'Merci pour votre demande. Je reviens vers vous rapidement pour votre estimation personnalisée.',
     });
   } catch (error) {
-    console.error('Erreur Function :', error);
-    return jsonResponse(500, {
-      message: error?.message || 'Erreur serveur.',
-    });
+    console.error('Erreur Function:', error);
+    return jsonResponse(500, { message: error?.message || 'Erreur serveur.' });
   }
 };
 

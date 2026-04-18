@@ -3,95 +3,349 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Demande d’estimation immobilière</title>
+  <title>Demande d’estimation immobilière | Nîmes</title>
+  <meta
+    name="description"
+    content="Obtenez une estimation immobilière offerte, fiable et sans engagement pour votre bien sur Nîmes."
+  />
+
+  <script src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer></script>
+
   <style>
     * {
       box-sizing: border-box;
     }
 
     :root {
-      --bg: #f7f1e8;
-      --card: rgba(255, 255, 255, 0.92);
-      --text: #1e1b18;
-      --muted: #6f675f;
-      --border: rgba(0, 0, 0, 0.08);
-      --accent: #a67c52;
-      --accent-dark: #8b6541;
-      --shadow: 0 18px 60px rgba(32, 24, 17, 0.12);
-      --radius: 22px;
+      --bg: #0f0c09;
+      --bg-soft: #18130f;
+      --surface: rgba(255, 255, 255, 0.08);
+      --surface-strong: rgba(255, 255, 255, 0.12);
+      --card: rgba(19, 15, 11, 0.78);
+      --border: rgba(255, 255, 255, 0.12);
+      --text: #f5efe7;
+      --muted: #d3c6b6;
+      --gold: #d8a15b;
+      --gold-2: #b77a33;
+      --danger: #ff8a80;
+      --success: #8de0b6;
+      --shadow: 0 25px 70px rgba(0, 0, 0, 0.35);
+      --radius-xl: 28px;
+      --radius-lg: 18px;
+      --radius-md: 14px;
+      --max: 1180px;
+    }
+
+    html {
+      scroll-behavior: smooth;
     }
 
     body {
       margin: 0;
-      font-family: "Segoe UI", Arial, sans-serif;
-      background:
-        radial-gradient(circle at top left, rgba(166,124,82,0.10), transparent 35%),
-        radial-gradient(circle at bottom right, rgba(166,124,82,0.08), transparent 35%),
-        var(--bg);
+      font-family: Inter, "Segoe UI", Arial, sans-serif;
       color: var(--text);
-      padding: 24px;
+      background:
+        radial-gradient(circle at 10% 10%, rgba(216, 161, 91, 0.18), transparent 28%),
+        radial-gradient(circle at 90% 20%, rgba(183, 122, 51, 0.14), transparent 24%),
+        radial-gradient(circle at 50% 100%, rgba(216, 161, 91, 0.10), transparent 30%),
+        linear-gradient(180deg, #120d09 0%, #0b0907 100%);
+      min-height: 100vh;
+      overflow-x: hidden;
+    }
+
+    .page-shell {
+      position: relative;
+      isolation: isolate;
+    }
+
+    .page-shell::before {
+      content: "";
+      position: fixed;
+      inset: 0;
+      background:
+        linear-gradient(rgba(255,255,255,0.03) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255,255,255,0.03) 1px, transparent 1px);
+      background-size: 34px 34px;
+      mask-image: radial-gradient(circle at center, rgba(0,0,0,1), rgba(0,0,0,0.25));
+      pointer-events: none;
+      z-index: -1;
     }
 
     .container {
-      max-width: 920px;
+      max-width: var(--max);
       margin: 0 auto;
+      padding: 28px 18px 60px;
+    }
+
+    .topbar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 18px;
+      margin-bottom: 26px;
+    }
+
+    .brand {
+      display: inline-flex;
+      align-items: center;
+      gap: 12px;
+      text-decoration: none;
+      color: var(--text);
+    }
+
+    .brand-badge {
+      width: 42px;
+      height: 42px;
+      border-radius: 14px;
+      display: grid;
+      place-items: center;
+      font-weight: 900;
+      background: linear-gradient(135deg, var(--gold), var(--gold-2));
+      color: #1b1208;
+      box-shadow: 0 10px 24px rgba(216, 161, 91, 0.28);
+    }
+
+    .brand-text strong {
+      display: block;
+      font-size: 0.98rem;
+      letter-spacing: 0.02em;
+    }
+
+    .brand-text span {
+      display: block;
+      color: var(--muted);
+      font-size: 0.86rem;
+    }
+
+    .pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 10px 14px;
+      border-radius: 999px;
+      background: rgba(255,255,255,0.07);
+      border: 1px solid var(--border);
+      color: var(--muted);
+      font-size: 0.9rem;
+      backdrop-filter: blur(8px);
     }
 
     .hero {
-      text-align: center;
-      margin-bottom: 28px;
-      padding-top: 12px;
+      display: grid;
+      grid-template-columns: 1.1fr 0.9fr;
+      gap: 28px;
+      align-items: stretch;
+      margin-bottom: 30px;
+    }
+
+    .hero-left,
+    .hero-right {
+      position: relative;
+      border-radius: var(--radius-xl);
+      border: 1px solid var(--border);
+      overflow: hidden;
+      box-shadow: var(--shadow);
+    }
+
+    .hero-left {
+      padding: 42px;
+      background:
+        linear-gradient(180deg, rgba(255,255,255,0.06), rgba(255,255,255,0.03)),
+        linear-gradient(135deg, rgba(216,161,91,0.12), rgba(255,255,255,0.04)),
+        rgba(18, 13, 9, 0.85);
+      backdrop-filter: blur(12px);
     }
 
     .eyebrow {
-      display: inline-block;
-      padding: 8px 14px;
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      padding: 10px 14px;
       border-radius: 999px;
-      background: rgba(166,124,82,0.12);
-      color: var(--accent-dark);
-      font-size: 13px;
+      background: rgba(216, 161, 91, 0.12);
+      color: #f4c58d;
+      border: 1px solid rgba(216, 161, 91, 0.18);
+      font-size: 0.82rem;
       font-weight: 700;
-      letter-spacing: 0.04em;
+      letter-spacing: 0.08em;
       text-transform: uppercase;
-      margin-bottom: 14px;
     }
 
     .hero h1 {
-      margin: 0;
-      font-size: clamp(2rem, 4vw, 3.2rem);
-      line-height: 1.1;
+      margin: 20px 0 14px;
+      font-size: clamp(2.3rem, 5vw, 4.5rem);
+      line-height: 0.96;
+      letter-spacing: -0.04em;
+    }
+
+    .hero h1 .accent {
+      background: linear-gradient(135deg, #fff3df, #d8a15b 60%, #b77a33);
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
     }
 
     .hero p {
-      max-width: 700px;
-      margin: 16px auto 0;
+      margin: 0;
       color: var(--muted);
       font-size: 1.05rem;
+      line-height: 1.8;
+      max-width: 670px;
+    }
+
+    .hero-points {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 14px;
+      margin-top: 28px;
+    }
+
+    .point {
+      padding: 16px;
+      border-radius: 18px;
+      background: rgba(255,255,255,0.05);
+      border: 1px solid rgba(255,255,255,0.08);
+    }
+
+    .point strong {
+      display: block;
+      font-size: 1rem;
+      margin-bottom: 6px;
+    }
+
+    .point span {
+      color: var(--muted);
+      font-size: 0.92rem;
+      line-height: 1.5;
+    }
+
+    .hero-right {
+      background:
+        linear-gradient(180deg, rgba(255,255,255,0.04), rgba(255,255,255,0.02)),
+        radial-gradient(circle at top left, rgba(216,161,91,0.22), transparent 35%),
+        linear-gradient(160deg, #21170f, #130f0b);
+      padding: 28px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      min-height: 100%;
+    }
+
+    .preview-card {
+      border-radius: 24px;
+      background:
+        linear-gradient(180deg, rgba(255,255,255,0.08), rgba(255,255,255,0.04)),
+        rgba(255,255,255,0.04);
+      border: 1px solid rgba(255,255,255,0.12);
+      padding: 22px;
+      backdrop-filter: blur(10px);
+    }
+
+    .preview-card h3 {
+      margin: 0 0 10px;
+      font-size: 1.2rem;
+    }
+
+    .preview-card p {
+      margin: 0;
+      color: var(--muted);
       line-height: 1.7;
     }
 
-    .card {
-      background: var(--card);
-      backdrop-filter: blur(8px);
-      border: 1px solid var(--border);
-      border-radius: var(--radius);
-      box-shadow: var(--shadow);
-      padding: 34px;
+    .floating-stats {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 14px;
+      margin-top: 18px;
     }
 
-    .section-title {
-      margin: 0 0 18px;
-      font-size: 1.2rem;
+    .stat-box {
+      padding: 18px;
+      border-radius: 18px;
+      background: rgba(255,255,255,0.06);
+      border: 1px solid rgba(255,255,255,0.08);
+    }
+
+    .stat-box strong {
+      display: block;
+      font-size: 1.6rem;
+      margin-bottom: 6px;
+      color: #ffe5c4;
+    }
+
+    .stat-box span {
+      color: var(--muted);
+      font-size: 0.92rem;
+    }
+
+    .form-section {
+      display: grid;
+      grid-template-columns: 1fr 320px;
+      gap: 24px;
+      align-items: start;
+    }
+
+    .form-card,
+    .side-card {
+      border-radius: var(--radius-xl);
+      border: 1px solid var(--border);
+      box-shadow: var(--shadow);
+      overflow: hidden;
+      background:
+        linear-gradient(180deg, rgba(255,255,255,0.05), rgba(255,255,255,0.03)),
+        rgba(17, 12, 9, 0.84);
+      backdrop-filter: blur(14px);
+    }
+
+    .form-card {
+      padding: 30px;
+    }
+
+    .form-head {
+      display: flex;
+      justify-content: space-between;
+      align-items: start;
+      gap: 18px;
+      margin-bottom: 24px;
+      flex-wrap: wrap;
+    }
+
+    .form-head h2 {
+      margin: 0 0 6px;
+      font-size: 1.55rem;
+    }
+
+    .form-head p {
+      margin: 0;
+      color: var(--muted);
+      line-height: 1.6;
+    }
+
+    .secure-badge {
+      padding: 12px 14px;
+      border-radius: 16px;
+      background: rgba(141, 224, 182, 0.10);
+      border: 1px solid rgba(141, 224, 182, 0.18);
+      color: #b7f3d2;
+      font-weight: 700;
+      font-size: 0.92rem;
+      white-space: nowrap;
+    }
+
+    form {
+      display: block;
     }
 
     .grid {
       display: grid;
-      grid-template-columns: 1fr 1fr;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
       gap: 18px;
     }
 
     .field {
-      margin-bottom: 18px;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
     }
 
     .field.full {
@@ -99,13 +353,19 @@
     }
 
     label {
-      display: block;
       font-weight: 700;
-      margin-bottom: 8px;
+      font-size: 0.96rem;
+      color: #fff7ef;
     }
 
     .required {
-      color: #b42318;
+      color: var(--danger);
+    }
+
+    .hint {
+      font-size: 0.84rem;
+      color: var(--muted);
+      margin-top: -2px;
     }
 
     input[type="text"],
@@ -115,21 +375,28 @@
     select,
     textarea {
       width: 100%;
-      border: 1px solid rgba(0, 0, 0, 0.10);
-      background: rgba(255,255,255,0.95);
-      border-radius: 14px;
-      padding: 14px 16px;
-      font-size: 15px;
+      padding: 15px 16px;
+      border-radius: 16px;
+      border: 1px solid rgba(255,255,255,0.10);
+      background: rgba(255,255,255,0.07);
       color: var(--text);
+      font-size: 15px;
       outline: none;
-      transition: border-color 0.2s ease, box-shadow 0.2s ease, transform 0.2s ease;
+      transition: 0.2s ease;
+      box-shadow: inset 0 1px 0 rgba(255,255,255,0.03);
+    }
+
+    input::placeholder,
+    textarea::placeholder {
+      color: #b7a995;
     }
 
     input:focus,
     select:focus,
     textarea:focus {
-      border-color: var(--accent);
-      box-shadow: 0 0 0 4px rgba(166,124,82,0.14);
+      border-color: rgba(216, 161, 91, 0.65);
+      box-shadow: 0 0 0 4px rgba(216, 161, 91, 0.12);
+      transform: translateY(-1px);
     }
 
     textarea {
@@ -139,211 +406,456 @@
 
     .choices {
       display: grid;
-      gap: 10px;
+      gap: 12px;
+    }
+
+    .choice-grid-2 {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
     }
 
     .choice {
       display: flex;
       align-items: center;
       gap: 12px;
-      border: 1px solid rgba(0, 0, 0, 0.08);
-      background: rgba(255,255,255,0.75);
-      padding: 13px 14px;
-      border-radius: 14px;
+      min-height: 58px;
+      padding: 14px 16px;
+      border-radius: 18px;
+      border: 1px solid rgba(255,255,255,0.10);
+      background: rgba(255,255,255,0.05);
+      color: var(--text);
       cursor: pointer;
-      transition: transform 0.15s ease, border-color 0.2s ease, background 0.2s ease;
+      transition: 0.2s ease;
+      user-select: none;
     }
 
     .choice:hover {
       transform: translateY(-1px);
-      border-color: rgba(166,124,82,0.45);
-      background: rgba(255,255,255,0.98);
+      border-color: rgba(216, 161, 91, 0.4);
+      background: rgba(255,255,255,0.08);
     }
 
     .choice input {
       margin: 0;
-      accent-color: var(--accent);
+      accent-color: var(--gold);
+      width: 18px;
+      height: 18px;
+      flex: 0 0 auto;
+    }
+
+    .choice span {
+      line-height: 1.4;
     }
 
     .form-footer {
-      margin-top: 8px;
+      margin-top: 24px;
+      display: grid;
+      gap: 14px;
+    }
+
+    .turnstile-wrap {
+      display: flex;
+      justify-content: center;
+      padding: 10px 0 2px;
     }
 
     .button {
       width: 100%;
       border: none;
-      border-radius: 16px;
-      padding: 16px 20px;
+      border-radius: 18px;
+      padding: 17px 22px;
       font-size: 16px;
       font-weight: 800;
-      background: linear-gradient(135deg, var(--accent), var(--accent-dark));
-      color: white;
+      letter-spacing: 0.01em;
+      color: #1d140b;
+      background: linear-gradient(135deg, #f2bf7b, #d89b4c 55%, #b87530);
       cursor: pointer;
-      transition: transform 0.18s ease, opacity 0.2s ease, box-shadow 0.2s ease;
-      box-shadow: 0 10px 24px rgba(166,124,82,0.28);
+      transition: transform 0.18s ease, box-shadow 0.2s ease, opacity 0.2s ease;
+      box-shadow: 0 16px 34px rgba(216, 161, 91, 0.28);
     }
 
     .button:hover {
       transform: translateY(-1px);
+      box-shadow: 0 20px 40px rgba(216, 161, 91, 0.34);
     }
 
     .button:disabled {
-      opacity: 0.7;
+      opacity: 0.72;
       cursor: not-allowed;
       transform: none;
     }
 
     .status {
       min-height: 24px;
-      margin-top: 14px;
-      font-weight: 600;
-      color: var(--accent-dark);
+      font-weight: 700;
+      line-height: 1.5;
+      color: #ffe2b9;
     }
 
-    .note {
-      margin-top: 10px;
+    .disclaimer {
       color: var(--muted);
-      font-size: 0.95rem;
+      font-size: 0.92rem;
       line-height: 1.6;
+      text-align: center;
     }
 
     .hidden {
       display: none;
     }
 
-    @media (max-width: 760px) {
-      .card {
-        padding: 22px;
-      }
+    .side-card {
+      padding: 22px;
+      position: sticky;
+      top: 18px;
+    }
 
-      .grid {
+    .side-block + .side-block {
+      margin-top: 18px;
+    }
+
+    .side-block h3 {
+      margin: 0 0 10px;
+      font-size: 1.08rem;
+    }
+
+    .side-block p,
+    .side-block li {
+      color: var(--muted);
+      line-height: 1.7;
+      font-size: 0.95rem;
+    }
+
+    .side-list {
+      list-style: none;
+      margin: 0;
+      padding: 0;
+      display: grid;
+      gap: 10px;
+    }
+
+    .side-list li {
+      padding: 12px 14px;
+      border-radius: 14px;
+      background: rgba(255,255,255,0.05);
+      border: 1px solid rgba(255,255,255,0.08);
+    }
+
+    .mini-callout {
+      padding: 16px;
+      border-radius: 18px;
+      background: linear-gradient(135deg, rgba(216,161,91,0.18), rgba(255,255,255,0.04));
+      border: 1px solid rgba(216,161,91,0.16);
+      color: #ffe9cb;
+      font-weight: 700;
+    }
+
+    .footer-note {
+      margin-top: 22px;
+      text-align: center;
+      color: #bba98f;
+      font-size: 0.9rem;
+    }
+
+    @media (max-width: 1080px) {
+      .hero {
         grid-template-columns: 1fr;
       }
 
-      .field.full {
-        grid-column: auto;
+      .form-section {
+        grid-template-columns: 1fr;
+      }
+
+      .side-card {
+        position: static;
+      }
+    }
+
+    @media (max-width: 760px) {
+      .container {
+        padding: 18px 12px 40px;
+      }
+
+      .topbar {
+        flex-direction: column;
+        align-items: stretch;
+      }
+
+      .hero-left,
+      .hero-right,
+      .form-card,
+      .side-card {
+        border-radius: 22px;
+      }
+
+      .hero-left {
+        padding: 26px 20px;
+      }
+
+      .form-card {
+        padding: 20px;
+      }
+
+      .hero-points,
+      .floating-stats,
+      .grid,
+      .choice-grid-2 {
+        grid-template-columns: 1fr;
+      }
+
+      .form-head {
+        align-items: stretch;
+      }
+
+      .secure-badge {
+        white-space: normal;
+      }
+
+      .turnstile-wrap {
+        justify-content: flex-start;
+        overflow-x: auto;
       }
     }
   </style>
 </head>
 <body>
-  <div class="container">
-    <header class="hero">
-      <div class="eyebrow">Estimation immobilière offerte</div>
-      <h1>Demande d’estimation immobilière<br>Estimez votre bien sur Nîmes</h1>
-      <p>
-        Chaque maison raconte une histoire…
-        Remplissez ce formulaire pour obtenir une estimation offerte, fiable et sans engagement de votre bien.
-      </p>
-    </header>
-
-    <section class="card">
-      <h2 class="section-title">Parlez-nous de votre bien</h2>
-
-      <form id="estimationForm">
-        <div class="grid">
-          <div class="field">
-            <label for="fullName">Nom / Prénom <span class="required">*</span></label>
-            <input type="text" id="fullName" name="fullName" required />
+  <div class="page-shell">
+    <div class="container">
+      <div class="topbar">
+        <a href="#" class="brand">
+          <div class="brand-badge">SN</div>
+          <div class="brand-text">
+            <strong>Estimation Nîmes</strong>
+            <span>Immobilier • Estimation offerte</span>
           </div>
+        </a>
 
-          <div class="field">
-            <label for="phone">Numéro de téléphone <span class="required">*</span></label>
-            <input type="tel" id="phone" name="phone" required />
-          </div>
+        <div class="pill">Réponse rapide • Sans engagement • Sécurisé</div>
+      </div>
 
-          <div class="field">
-            <label for="email">Adresse email <span class="required">*</span></label>
-            <input type="email" id="email" name="email" required />
-          </div>
-
-          <div class="field">
-            <label for="surface">Surface du bien (m²)</label>
-            <input type="number" id="surface" name="surface" min="0" step="1" />
-          </div>
-
-          <div class="field full">
-            <label for="propertyAddress">Adresse du bien à estimer <span class="required">*</span></label>
-            <input type="text" id="propertyAddress" name="propertyAddress" required />
-          </div>
-
-          <div class="field">
-            <label>Type de bien <span class="required">*</span></label>
-            <div class="choices">
-              <label class="choice"><input type="radio" name="propertyType" value="Appartement" required> Appartement</label>
-              <label class="choice"><input type="radio" name="propertyType" value="Maison"> Maison</label>
-              <label class="choice"><input type="radio" name="propertyType" value="Terrain"> Terrain</label>
-              <label class="choice"><input type="radio" name="propertyType" value="Autre"> Autre</label>
-            </div>
-          </div>
-
-          <div class="field">
-            <label for="rooms">Nombre de pièces</label>
-            <input type="number" id="rooms" name="rooms" min="0" step="1" />
-          </div>
-
-          <div class="field">
-            <label>État du bien</label>
-            <div class="choices">
-              <label class="choice"><input type="radio" name="propertyCondition" value="Neuf"> Neuf</label>
-              <label class="choice"><input type="radio" name="propertyCondition" value="Bon état"> Bon état</label>
-              <label class="choice"><input type="radio" name="propertyCondition" value="À rafraîchir"> À rafraîchir</label>
-              <label class="choice"><input type="radio" name="propertyCondition" value="À rénover"> À rénover</label>
-            </div>
-          </div>
-
-          <div class="field full">
-            <label>Particularités du bien</label>
-            <div class="choices">
-              <label class="choice"><input type="checkbox" name="features" value="Terrasse / balcon"> Terrasse / balcon</label>
-              <label class="choice"><input type="checkbox" name="features" value="Jardin"> Jardin</label>
-              <label class="choice"><input type="checkbox" name="features" value="Garage / parking"> Garage / parking</label>
-              <label class="choice"><input type="checkbox" name="features" value="Piscine"> Piscine</label>
-              <label class="choice"><input type="checkbox" name="features" value="Vue exceptionnelle"> Vue exceptionnelle</label>
-              <label class="choice"><input type="checkbox" name="features" value="Aucun" id="feature-none"> Aucun</label>
-            </div>
-          </div>
-
-          <div class="field">
-            <label>Projet</label>
-            <div class="choices">
-              <label class="choice"><input type="radio" name="projectType" value="Vente rapide"> Vente rapide</label>
-              <label class="choice"><input type="radio" name="projectType" value="Vente dans quelques mois"> Vente dans quelques mois</label>
-              <label class="choice"><input type="radio" name="projectType" value="Simple estimation (curiosité)"> Simple estimation (curiosité)</label>
-            </div>
-          </div>
-
-          <div class="field">
-            <label for="saleDelay">Délai de vente souhaité</label>
-            <select id="saleDelay" name="saleDelay">
-              <option value="">Choisir</option>
-              <option value="Urgent">Urgent</option>
-              <option value="1 à 3 mois">1 à 3 mois</option>
-              <option value="3 à 6 mois">3 à 6 mois</option>
-              <option value="6 mois et +">6 mois et +</option>
-            </select>
-          </div>
-
-          <div class="field full">
-            <label for="message">Message complémentaire</label>
-            <textarea id="message" name="message"></textarea>
-          </div>
-        </div>
-
-        <div class="hidden">
-          <label for="website">Ne pas remplir</label>
-          <input type="text" id="website" name="website" />
-        </div>
-
-        <div class="form-footer">
-          <button class="button" type="submit" id="submitBtn">Demander mon estimation</button>
-          <div class="status" id="status"></div>
-          <p class="note">
-            Réponse rapide, estimation offerte, sans engagement.
+      <section class="hero">
+        <div class="hero-left">
+          <div class="eyebrow">Estimation immobilière offerte</div>
+          <h1>
+            Demande d’estimation
+            <br />
+            <span class="accent">haut de gamme à Nîmes</span>
+          </h1>
+          <p>
+            Chaque maison raconte une histoire.
+            Confiez-nous les informations essentielles sur votre bien pour recevoir
+            une estimation claire, fiable et sans engagement, pensée pour valoriser
+            son vrai potentiel.
           </p>
+
+          <div class="hero-points">
+            <div class="point">
+              <strong>Approche sérieuse</strong>
+              <span>Un formulaire structuré pour une estimation plus pertinente.</span>
+            </div>
+            <div class="point">
+              <strong>Traitement rapide</strong>
+              <span>Nous analysons votre demande et revenons vers vous rapidement.</span>
+            </div>
+            <div class="point">
+              <strong>Sans engagement</strong>
+              <span>Vous obtenez une première vision sans pression commerciale.</span>
+            </div>
+          </div>
         </div>
-      </form>
-    </section>
+
+        <div class="hero-right">
+          <div class="preview-card">
+            <h3>Valorisez votre bien avec une première lecture premium</h3>
+            <p>
+              Type de bien, état, surface, adresse, projet, délais…
+              chaque détail compte pour mieux positionner votre estimation.
+            </p>
+          </div>
+
+          <div class="floating-stats">
+            <div class="stat-box">
+              <strong>24h / 48h</strong>
+              <span>Retour rapide selon le niveau de détail fourni.</span>
+            </div>
+            <div class="stat-box">
+              <strong>100% offert</strong>
+              <span>Une demande simple, sans engagement de votre part.</span>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="form-section">
+        <div class="form-card">
+          <div class="form-head">
+            <div>
+              <h2>Parlez-nous de votre bien</h2>
+              <p>
+                Remplissez ce formulaire pour recevoir une estimation personnalisée
+                de votre bien sur Nîmes.
+              </p>
+            </div>
+
+            <div class="secure-badge">Formulaire protégé • Anti-bot activé</div>
+          </div>
+
+          <form id="estimationForm" novalidate>
+            <div class="grid">
+              <div class="field">
+                <label for="fullName">Nom / Prénom <span class="required">*</span></label>
+                <input type="text" id="fullName" name="fullName" placeholder="Votre nom complet" required />
+              </div>
+
+              <div class="field">
+                <label for="phone">Numéro de téléphone <span class="required">*</span></label>
+                <input type="tel" id="phone" name="phone" placeholder="Ex : 06 12 34 56 78" required />
+              </div>
+
+              <div class="field">
+                <label for="email">Adresse email <span class="required">*</span></label>
+                <input type="email" id="email" name="email" placeholder="votre@email.fr" required />
+              </div>
+
+              <div class="field">
+                <label for="surface">Surface du bien (m²)</label>
+                <input type="number" id="surface" name="surface" min="0" step="1" placeholder="Ex : 120" />
+              </div>
+
+              <div class="field full">
+                <label for="propertyAddress">Adresse du bien à estimer <span class="required">*</span></label>
+                <input
+                  type="text"
+                  id="propertyAddress"
+                  name="propertyAddress"
+                  placeholder="Adresse complète du bien"
+                  required
+                />
+              </div>
+
+              <div class="field">
+                <label>Type de bien <span class="required">*</span></label>
+                <div class="choices choice-grid-2">
+                  <label class="choice"><input type="radio" name="propertyType" value="Appartement" required /><span>Appartement</span></label>
+                  <label class="choice"><input type="radio" name="propertyType" value="Maison" /><span>Maison</span></label>
+                  <label class="choice"><input type="radio" name="propertyType" value="Terrain" /><span>Terrain</span></label>
+                  <label class="choice"><input type="radio" name="propertyType" value="Autre" /><span>Autre</span></label>
+                </div>
+              </div>
+
+              <div class="field">
+                <label for="rooms">Nombre de pièces</label>
+                <input type="number" id="rooms" name="rooms" min="0" step="1" placeholder="Ex : 5" />
+              </div>
+
+              <div class="field">
+                <label>État du bien</label>
+                <div class="choices">
+                  <label class="choice"><input type="radio" name="propertyCondition" value="Neuf" /><span>Neuf</span></label>
+                  <label class="choice"><input type="radio" name="propertyCondition" value="Bon état" /><span>Bon état</span></label>
+                  <label class="choice"><input type="radio" name="propertyCondition" value="À rafraîchir" /><span>À rafraîchir</span></label>
+                  <label class="choice"><input type="radio" name="propertyCondition" value="À rénover" /><span>À rénover</span></label>
+                </div>
+              </div>
+
+              <div class="field full">
+                <label>Particularités du bien</label>
+                <div class="choices choice-grid-2">
+                  <label class="choice"><input type="checkbox" name="features" value="Terrasse / balcon" /><span>Terrasse / balcon</span></label>
+                  <label class="choice"><input type="checkbox" name="features" value="Jardin" /><span>Jardin</span></label>
+                  <label class="choice"><input type="checkbox" name="features" value="Garage / parking" /><span>Garage / parking</span></label>
+                  <label class="choice"><input type="checkbox" name="features" value="Piscine" /><span>Piscine</span></label>
+                  <label class="choice"><input type="checkbox" name="features" value="Vue exceptionnelle" /><span>Vue exceptionnelle</span></label>
+                  <label class="choice"><input type="checkbox" name="features" value="Aucun" id="feature-none" /><span>Aucun</span></label>
+                </div>
+              </div>
+
+              <div class="field">
+                <label>Projet</label>
+                <div class="choices">
+                  <label class="choice"><input type="radio" name="projectType" value="Vente rapide" /><span>Vente rapide</span></label>
+                  <label class="choice"><input type="radio" name="projectType" value="Vente dans quelques mois" /><span>Vente dans quelques mois</span></label>
+                  <label class="choice"><input type="radio" name="projectType" value="Simple estimation (curiosité)" /><span>Simple estimation (curiosité)</span></label>
+                </div>
+              </div>
+
+              <div class="field">
+                <label for="saleDelay">Délai de vente souhaité</label>
+                <select id="saleDelay" name="saleDelay">
+                  <option value="">Choisir</option>
+                  <option value="Urgent">Urgent</option>
+                  <option value="1 à 3 mois">1 à 3 mois</option>
+                  <option value="3 à 6 mois">3 à 6 mois</option>
+                  <option value="6 mois et +">6 mois et +</option>
+                </select>
+              </div>
+
+              <div class="field full">
+                <label for="message">Message complémentaire</label>
+                <textarea
+                  id="message"
+                  name="message"
+                  placeholder="Ajoutez ici toute précision utile concernant le bien, son emplacement, son état ou votre projet."
+                ></textarea>
+                <div class="hint">Plus votre demande est précise, plus la première estimation sera pertinente.</div>
+              </div>
+            </div>
+
+            <div class="hidden">
+              <label for="website">Ne pas remplir</label>
+              <input type="text" id="website" name="website" />
+            </div>
+
+            <div class="form-footer">
+              <div class="turnstile-wrap">
+                <div
+                  class="cf-turnstile"
+                  data-sitekey="0x4AAAAAAC_PIhktGbAeNtHE"
+                  data-theme="dark"
+                  data-appearance="always">
+                </div>
+              </div>
+
+              <button class="button" type="submit" id="submitBtn">Demander mon estimation</button>
+
+              <div class="status" id="status"></div>
+
+              <div class="disclaimer">
+                Vos informations sont utilisées uniquement pour traiter votre demande d’estimation.
+              </div>
+            </div>
+          </form>
+        </div>
+
+        <aside class="side-card">
+          <div class="side-block">
+            <h3>Pourquoi demander une estimation ?</h3>
+            <p>
+              Une bonne première estimation vous aide à mieux positionner votre bien,
+              préparer une vente et comprendre son potentiel sur le marché local.
+            </p>
+          </div>
+
+          <div class="side-block">
+            <h3>Ce que nous analysons</h3>
+            <ul class="side-list">
+              <li>Type et état général du bien</li>
+              <li>Adresse et contexte de localisation</li>
+              <li>Surface, pièces et équipements</li>
+              <li>Délai et objectif de vente</li>
+            </ul>
+          </div>
+
+          <div class="side-block">
+            <div class="mini-callout">
+              Plus votre demande est complète, plus le retour sera qualitatif.
+            </div>
+          </div>
+        </aside>
+      </section>
+
+      <div class="footer-note">
+        Estimation immobilière • Nîmes • Formulaire premium sécurisé
+      </div>
+    </div>
   </div>
 
   <script src="./main.js"></script>
