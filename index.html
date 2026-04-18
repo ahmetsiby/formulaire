@@ -1,0 +1,351 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Demande d’estimation immobilière</title>
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+
+    :root {
+      --bg: #f7f1e8;
+      --card: rgba(255, 255, 255, 0.92);
+      --text: #1e1b18;
+      --muted: #6f675f;
+      --border: rgba(0, 0, 0, 0.08);
+      --accent: #a67c52;
+      --accent-dark: #8b6541;
+      --shadow: 0 18px 60px rgba(32, 24, 17, 0.12);
+      --radius: 22px;
+    }
+
+    body {
+      margin: 0;
+      font-family: "Segoe UI", Arial, sans-serif;
+      background:
+        radial-gradient(circle at top left, rgba(166,124,82,0.10), transparent 35%),
+        radial-gradient(circle at bottom right, rgba(166,124,82,0.08), transparent 35%),
+        var(--bg);
+      color: var(--text);
+      padding: 24px;
+    }
+
+    .container {
+      max-width: 920px;
+      margin: 0 auto;
+    }
+
+    .hero {
+      text-align: center;
+      margin-bottom: 28px;
+      padding-top: 12px;
+    }
+
+    .eyebrow {
+      display: inline-block;
+      padding: 8px 14px;
+      border-radius: 999px;
+      background: rgba(166,124,82,0.12);
+      color: var(--accent-dark);
+      font-size: 13px;
+      font-weight: 700;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+      margin-bottom: 14px;
+    }
+
+    .hero h1 {
+      margin: 0;
+      font-size: clamp(2rem, 4vw, 3.2rem);
+      line-height: 1.1;
+    }
+
+    .hero p {
+      max-width: 700px;
+      margin: 16px auto 0;
+      color: var(--muted);
+      font-size: 1.05rem;
+      line-height: 1.7;
+    }
+
+    .card {
+      background: var(--card);
+      backdrop-filter: blur(8px);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      padding: 34px;
+    }
+
+    .section-title {
+      margin: 0 0 18px;
+      font-size: 1.2rem;
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 18px;
+    }
+
+    .field {
+      margin-bottom: 18px;
+    }
+
+    .field.full {
+      grid-column: 1 / -1;
+    }
+
+    label {
+      display: block;
+      font-weight: 700;
+      margin-bottom: 8px;
+    }
+
+    .required {
+      color: #b42318;
+    }
+
+    input[type="text"],
+    input[type="email"],
+    input[type="tel"],
+    input[type="number"],
+    select,
+    textarea {
+      width: 100%;
+      border: 1px solid rgba(0, 0, 0, 0.10);
+      background: rgba(255,255,255,0.95);
+      border-radius: 14px;
+      padding: 14px 16px;
+      font-size: 15px;
+      color: var(--text);
+      outline: none;
+      transition: border-color 0.2s ease, box-shadow 0.2s ease, transform 0.2s ease;
+    }
+
+    input:focus,
+    select:focus,
+    textarea:focus {
+      border-color: var(--accent);
+      box-shadow: 0 0 0 4px rgba(166,124,82,0.14);
+    }
+
+    textarea {
+      min-height: 140px;
+      resize: vertical;
+    }
+
+    .choices {
+      display: grid;
+      gap: 10px;
+    }
+
+    .choice {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      border: 1px solid rgba(0, 0, 0, 0.08);
+      background: rgba(255,255,255,0.75);
+      padding: 13px 14px;
+      border-radius: 14px;
+      cursor: pointer;
+      transition: transform 0.15s ease, border-color 0.2s ease, background 0.2s ease;
+    }
+
+    .choice:hover {
+      transform: translateY(-1px);
+      border-color: rgba(166,124,82,0.45);
+      background: rgba(255,255,255,0.98);
+    }
+
+    .choice input {
+      margin: 0;
+      accent-color: var(--accent);
+    }
+
+    .form-footer {
+      margin-top: 8px;
+    }
+
+    .button {
+      width: 100%;
+      border: none;
+      border-radius: 16px;
+      padding: 16px 20px;
+      font-size: 16px;
+      font-weight: 800;
+      background: linear-gradient(135deg, var(--accent), var(--accent-dark));
+      color: white;
+      cursor: pointer;
+      transition: transform 0.18s ease, opacity 0.2s ease, box-shadow 0.2s ease;
+      box-shadow: 0 10px 24px rgba(166,124,82,0.28);
+    }
+
+    .button:hover {
+      transform: translateY(-1px);
+    }
+
+    .button:disabled {
+      opacity: 0.7;
+      cursor: not-allowed;
+      transform: none;
+    }
+
+    .status {
+      min-height: 24px;
+      margin-top: 14px;
+      font-weight: 600;
+      color: var(--accent-dark);
+    }
+
+    .note {
+      margin-top: 10px;
+      color: var(--muted);
+      font-size: 0.95rem;
+      line-height: 1.6;
+    }
+
+    .hidden {
+      display: none;
+    }
+
+    @media (max-width: 760px) {
+      .card {
+        padding: 22px;
+      }
+
+      .grid {
+        grid-template-columns: 1fr;
+      }
+
+      .field.full {
+        grid-column: auto;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <header class="hero">
+      <div class="eyebrow">Estimation immobilière offerte</div>
+      <h1>Demande d’estimation immobilière<br>Estimez votre bien sur Nîmes</h1>
+      <p>
+        Chaque maison raconte une histoire…
+        Remplissez ce formulaire pour obtenir une estimation offerte, fiable et sans engagement de votre bien.
+      </p>
+    </header>
+
+    <section class="card">
+      <h2 class="section-title">Parlez-nous de votre bien</h2>
+
+      <form id="estimationForm">
+        <div class="grid">
+          <div class="field">
+            <label for="fullName">Nom / Prénom <span class="required">*</span></label>
+            <input type="text" id="fullName" name="fullName" required />
+          </div>
+
+          <div class="field">
+            <label for="phone">Numéro de téléphone <span class="required">*</span></label>
+            <input type="tel" id="phone" name="phone" required />
+          </div>
+
+          <div class="field">
+            <label for="email">Adresse email <span class="required">*</span></label>
+            <input type="email" id="email" name="email" required />
+          </div>
+
+          <div class="field">
+            <label for="surface">Surface du bien (m²)</label>
+            <input type="number" id="surface" name="surface" min="0" step="1" />
+          </div>
+
+          <div class="field full">
+            <label for="propertyAddress">Adresse du bien à estimer <span class="required">*</span></label>
+            <input type="text" id="propertyAddress" name="propertyAddress" required />
+          </div>
+
+          <div class="field">
+            <label>Type de bien <span class="required">*</span></label>
+            <div class="choices">
+              <label class="choice"><input type="radio" name="propertyType" value="Appartement" required> Appartement</label>
+              <label class="choice"><input type="radio" name="propertyType" value="Maison"> Maison</label>
+              <label class="choice"><input type="radio" name="propertyType" value="Terrain"> Terrain</label>
+              <label class="choice"><input type="radio" name="propertyType" value="Autre"> Autre</label>
+            </div>
+          </div>
+
+          <div class="field">
+            <label for="rooms">Nombre de pièces</label>
+            <input type="number" id="rooms" name="rooms" min="0" step="1" />
+          </div>
+
+          <div class="field">
+            <label>État du bien</label>
+            <div class="choices">
+              <label class="choice"><input type="radio" name="propertyCondition" value="Neuf"> Neuf</label>
+              <label class="choice"><input type="radio" name="propertyCondition" value="Bon état"> Bon état</label>
+              <label class="choice"><input type="radio" name="propertyCondition" value="À rafraîchir"> À rafraîchir</label>
+              <label class="choice"><input type="radio" name="propertyCondition" value="À rénover"> À rénover</label>
+            </div>
+          </div>
+
+          <div class="field full">
+            <label>Particularités du bien</label>
+            <div class="choices">
+              <label class="choice"><input type="checkbox" name="features" value="Terrasse / balcon"> Terrasse / balcon</label>
+              <label class="choice"><input type="checkbox" name="features" value="Jardin"> Jardin</label>
+              <label class="choice"><input type="checkbox" name="features" value="Garage / parking"> Garage / parking</label>
+              <label class="choice"><input type="checkbox" name="features" value="Piscine"> Piscine</label>
+              <label class="choice"><input type="checkbox" name="features" value="Vue exceptionnelle"> Vue exceptionnelle</label>
+              <label class="choice"><input type="checkbox" name="features" value="Aucun" id="feature-none"> Aucun</label>
+            </div>
+          </div>
+
+          <div class="field">
+            <label>Projet</label>
+            <div class="choices">
+              <label class="choice"><input type="radio" name="projectType" value="Vente rapide"> Vente rapide</label>
+              <label class="choice"><input type="radio" name="projectType" value="Vente dans quelques mois"> Vente dans quelques mois</label>
+              <label class="choice"><input type="radio" name="projectType" value="Simple estimation (curiosité)"> Simple estimation (curiosité)</label>
+            </div>
+          </div>
+
+          <div class="field">
+            <label for="saleDelay">Délai de vente souhaité</label>
+            <select id="saleDelay" name="saleDelay">
+              <option value="">Choisir</option>
+              <option value="Urgent">Urgent</option>
+              <option value="1 à 3 mois">1 à 3 mois</option>
+              <option value="3 à 6 mois">3 à 6 mois</option>
+              <option value="6 mois et +">6 mois et +</option>
+            </select>
+          </div>
+
+          <div class="field full">
+            <label for="message">Message complémentaire</label>
+            <textarea id="message" name="message"></textarea>
+          </div>
+        </div>
+
+        <div class="hidden">
+          <label for="website">Ne pas remplir</label>
+          <input type="text" id="website" name="website" />
+        </div>
+
+        <div class="form-footer">
+          <button class="button" type="submit" id="submitBtn">Demander mon estimation</button>
+          <div class="status" id="status"></div>
+          <p class="note">
+            Réponse rapide, estimation offerte, sans engagement.
+          </p>
+        </div>
+      </form>
+    </section>
+  </div>
+
+  <script src="./main.js"></script>
+</body>
+</html>
