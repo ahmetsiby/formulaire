@@ -155,3 +155,18 @@ function escapeHtml(str) {
     .replaceAll('"', '&quot;')
     .replaceAll("'", '&#039;');
 }
+const resendApiKey = process.env.RESEND_API_KEY;
+const toEmail = process.env.ESTIMATION_TO_EMAIL;
+const fromEmail = process.env.ESTIMATION_FROM_EMAIL;
+const turnstileSecret = process.env.TURNSTILE_SECRET_KEY;
+
+console.log('ENV CHECK', {
+  hasResendApiKey: Boolean(resendApiKey),
+  hasToEmail: Boolean(toEmail),
+  hasFromEmail: Boolean(fromEmail),
+  hasTurnstileSecret: Boolean(turnstileSecret),
+});
+
+if (!resendApiKey || !toEmail || !fromEmail || !turnstileSecret) {
+  return jsonResponse(500, { message: 'Configuration serveur incomplète.' });
+}
